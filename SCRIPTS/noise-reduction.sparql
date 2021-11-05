@@ -1,0 +1,64 @@
+dstore create contech
+
+active contech
+
+# LOAD ABOX
+import "./RDF/ABox/brandsektioner.ttl"
+import "./RDF/ABox/bygningstopologi.ttl"
+import "./RDF/ABox/elementegenskaber.ttl"
+import "./RDF/ABox/produkter.ttl"
+import "./RDF/ABox/rumprogram.ttl"
+
+# LOAD TBOX
+import > <https://w3id.org/bot> "./RDF/TBox/bot.ttl"
+import > <https://w3id.org/own> "./RDF/TBox/own-terms.ttl"
+importaxioms <https://w3id.org/bot> > rdfox:DefaultTriples
+importaxioms <https://w3id.org/own> > rdfox:DefaultTriples
+
+# LOAD RULES FOR SATURATION
+import "./RULES/Saturation2-noise-reduction.dlog"
+
+# DEFINE PREFIXES
+PREFIX ex:   <https://example.com/terms#>
+PREFIX bot:  <https://w3id.org/bot#>
+PREFIX rdfs: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX inst: <https://niras.dk/projects/1234/>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX qudt: <http://qudt.org/schema/qudt/>
+
+set output out
+
+echo \n\n### LIST SPACE | EXPECTED NOISE LEVEL | ACCEPTED BACKGROUND NOISE LEVEL ###\n
+answer "./QUERIES/Space-noise-req.sparql"
+
+echo \n\n### LIST REQUIRED NOISE REDUCTION OF WALL SURFACES ###\n
+answer "./QUERIES/Space-noise-red-req.sparql"
+
+echo \n\n### CHANGE REQUIREMENT IN SP4 TO 40 dB(A) ###\n
+DELETE { ?s ex:acceptedBackgroundNoiseLevel ?nl } \
+INSERT { ?s ex:acceptedBackgroundNoiseLevel 40 } \
+WHERE { \
+    BIND(inst:SP4 AS ?s) \
+    ?s ex:acceptedBackgroundNoiseLevel ?nl \
+}
+
+answer "./QUERIES/Space-noise-req.sparql"
+
+echo \n\n### LIST REQUIRED NOISE REDUCTION OF WALL SURFACES ###\n
+echo (SHOULD NOW BE 60 dB(A))\n
+answer "./QUERIES/Space-noise-red-req.sparql"
+
+echo \n\n### SET REQUIREMENT IN SP2 TO 30 dB(A) ###\n
+INSERT { ?s ex:acceptedBackgroundNoiseLevel 30 } \
+WHERE { BIND(inst:SP2 AS ?s) }
+
+answer "./QUERIES/Space-noise-req.sparql"
+
+echo \n\n### LIST REQUIRED NOISE REDUCTION OF WALL SURFACES ###\n
+echo (SHOULD NOW BE 60 dB(A))\n
+answer "./QUERIES/Space-noise-red-req.sparql"
+
+# REMOVE STORE AND QUIT
+dstore delete contech force
+
+quit

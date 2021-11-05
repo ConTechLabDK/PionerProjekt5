@@ -1,0 +1,4 @@
+SELECT ?el ?fc
+WHERE {
+    ?el ex:fireClassification ?fc .
+}

@@ -1,0 +1,35 @@
+@prefix inst: <https://niras.dk/projects/1234/> .
+@prefix rdfs: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ex:   <https://example.com/terms#> .
+
+inst:BU1 
+    rdfs:label  "Testbygning"@da , 
+                "Test building"@en .
+
+inst:ST1 
+    rdfs:label  "Etage 1"@da , 
+                "1st floor"@en .
+
+inst:SP1 
+    rdfs:label  "Køkken"@da , 
+                "Kitchen"@en .
+
+inst:SP2 
+    a ex:WetRoom ;
+    rdfs:label  "WC"@da , 
+                "WC"@en .
+
+inst:SP3 
+    rdfs:label  "Sportshal"@da , 
+                "Gym"@en ;
+    ex:expectedMaxNoiseLevel 100 .
+
+inst:SP4 
+    rdfs:label  "Psykiatripraksis"@da , 
+                "1st floor"@en ;
+    ex:acceptedBackgroundNoiseLevel 30 .
+
+inst:SP5 
+    rdfs:label  "Musiklokale"@da , 
+                "Psychiatric practice"@en ;
+    ex:expectedMaxNoiseLevel 100 .

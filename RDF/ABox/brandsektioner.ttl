@@ -1,0 +1,14 @@
+@prefix ex:   <https://example.com/terms#> .
+@prefix bot:  <https://w3id.org/bot#> .
+@prefix rdfs: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix inst: <https://niras.dk/projects/1234/> .
+
+inst:FS1 a ex:FireSection ;
+    rdfs:label          "Brandsektion A"@da ,
+                        "Fire section A"@en ;
+    bot:containsZone    inst:SP1 , inst:SP2 , inst:SP3 .
+
+inst:FS2 a ex:FireSection ;
+    rdfs:label          "Brandsektion B"@da ,
+                        "Fire section B"@en ;
+    bot:containsZone    inst:SP4 , inst:SP5 .

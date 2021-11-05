@@ -1,0 +1,9 @@
+SELECT ?fs ?fsLabel ?sp ?spLabel
+WHERE{
+    ?fs a ex:FireSection ;
+        rdfs:label ?fsLabel ;
+        bot:containsZone ?sp .
+    ?sp rdfs:label ?spLabel
+    FILTER(LANG(?fsLabel) = "da")
+    FILTER(LANG(?spLabel) = "da")
+}

@@ -1,0 +1,201 @@
+@prefix ex:     <https://example.com/terms#> .
+@prefix rdfs:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix bot:    <https://w3id.org/bot#> .
+@prefix qudt:   <http://qudt.org/schema/qudt/> .
+@prefix schema: <http://schema.org/> .
+
+#########
+# CLASSES
+#########
+ex:FireSection 
+    a               owl:Class ;
+    rdfs:subClassOf bot:Zone ;
+    rdfs:label      "Brandsektion"@da , 
+                    "fire section"@en .
+ex:FireCell 
+    a               owl:Class ;
+    rdfs:subClassOf bot:Zone ;
+    rdfs:label      "Brandcelle"@da , 
+                    "fire cell"@en .
+
+ex:FireClassification
+    a               owl:Class ;
+    rdfs:label      "Brandklasifikation"@da , 
+                    "fire classification"@en .
+
+ex:EI120
+    a               owl:Class ;
+    rdfs:label      "EI 120"@da , 
+                    "EI 120"@en .
+
+ex:EI60
+    a               owl:Class ;
+    rdfs:label      "EI 60"@da , 
+                    "EI 60"@en .
+
+ex:EI30
+    a               owl:Class ;
+    rdfs:label      "EI 30"@da , 
+                    "EI 30"@en .
+
+ex:WetRoom
+    a               owl:Class ;
+    rdfs:label      "Vådrum"@da , 
+                    "Wet room"@en ;
+    rdfs:comment    "Et rum hvor der forventes aktivitet som afgiver fugt."@da ,
+                    "A space that must be expected to host moisture producing activit."@en .
+
+###################
+# SIMPLE PROPERTIES
+###################
+ex:expectedMaxNoiseLevel 
+    a               owl:DatatypeProperty ;
+    rdfs:label      "forventet maksimalt støjniveau"@da , 
+                    "expected maximum noise level"@en ;
+    rdfs:comment    "Det forventede maksimale støjniveau er det støjniveau målt i dB(A), som må forventes at kunne opleves i rummet ifm. udførelse af den aktivitet som rummet er beregnet til."@da ,
+                    "The expected maximum noise level is the noise level measured in dB(A), which can be expected to be experienced in the room in connection with the intended use of the room."@en ;
+    qudt:ucumCode   "dB" .
+
+ex:acceptedBackgroundNoiseLevel 
+    a               owl:DatatypeProperty ;
+    rdfs:label      "accepteret niveau for baggrundsstøj"@da , 
+                    "accepted background noise level"@en ;
+    rdfs:comment    "Det accepterede niveau for baggrundsstøj er det støjniveau målt i dB(A), som kan accepteres overført fra tilstødende rum."@da ,
+                    "The accepted background noise level is the noise level measured in dB(A), transferred from adjacent rooms, that can be accepted."@en ;
+    qudt:ucumCode   "dB" .
+
+ex:wallThickness 
+    a               owl:DatatypeProperty ;
+    rdfs:label      "vægtykkelse"@da , 
+                    "wall thickness"@en ;
+    rdfs:comment    "Tykkelsen af væggen målt fra den færdige overflade."@da ,
+                    "The thickness of the wall measured from the wall finish."@en ;
+    qudt:ucumCode   "m" .
+
+ex:maxWallHeight 
+    a               owl:DatatypeProperty ;
+    rdfs:label      "største væghøjde"@da , 
+                    "maximum wall height"@en ;
+    rdfs:comment    "Højden af væggen hvor den er højest."@da ,
+                    "The height of the wall where it is highest."@en ;
+    qudt:ucumCode   "m" .
+
+
+###################
+# OBJECT PROPERTIES
+###################
+ex:hasMountedElement
+    a               owl:ObjectProperty ;
+    rdfs:subClassOf bot:hasSubElement ;
+    rdfs:label      "har monteret bygningsdel"@da , 
+                    "has mounted element"@en ;
+    rdfs:comment    "Relation mellem en bygningsdel A og en bygningsdel B, som er monteret på, og dermed bæres af A. Eksempelvis et væghængt skab, som bæres af en væg."@da ,
+                    "Relationship betweeb an element A and an element B, that is mounted on, and thereby carried by A. For example a wall-mounted cabinet, which is carried by a wall."@en .
+
+ex:fireClassification
+    a                       owl:ObjectProperty ;
+    schema:domainIncludes   bot:Element , ex:WallSurface ;
+    rdfs:range              ex:FireClassification ;
+    rdfs:label              "brandklassifikation"@da , 
+                            "fire classification"@en ;
+    rdfs:comment            "Relation mellem en bygningsdel og en brandklasse."@da ,
+                            "Relationship between an element and a fire classification."@en .
+
+ex:touchesFireSection
+    a               owl:ObjectProperty ;
+    rdfs:domain     bot:Element ;
+    rdfs:range      ex:FireClassification ;
+    rdfs:label      "rører brandsektion"@da , 
+                    "touches fire section"@en .
+
+ex:containedInFireSection
+    a               owl:ObjectProperty ;
+    rdfs:domain     bot:Space ;
+    rdfs:range      ex:FireSection ;
+    rdfs:label      "indeholdt i brandsektion"@da , 
+                    "contained in fire section"@en .
+
+############
+# INTERFACES
+############
+# BOT defines an interface as a generic concept to quantify some relationship between two things.
+# We extend this concept to describe the 
+ex:MountingArea
+    a                   owl:Class ;
+    rdfs:subClassOf     bot:Interface ;
+    rdfs:label          "Ophængningsfelt"@da , 
+                        "Mounting area"@en ;
+    rdfs:comment        "Grænsefladen mellem en bygningsdel A og en bygningsdel B, som er monteret på, og dermed bæres af A. Eksempelvis området hvor et væghængt skab er monteret."@da ,
+                        "The interface between an element A and an element B, that is mounted on, and thereby carried by A. For example the area where a wall-mounted cabinet is mounted."@en .
+ex:carryingElement
+    a                   owl:ObjectProperty ;
+    rdfs:subPropertyOf  bot:interfaceOf ;
+    rdfs:domain         ex:MountingArea ;
+    rdfs:range          bot:Element ;
+    rdfs:label          "bærende bygningsdel"@da , 
+                        "carrying element"@en .
+ex:carriedElement
+    a                   owl:ObjectProperty ;
+    rdfs:subPropertyOf  bot:interfaceOf ;
+    rdfs:domain         ex:MountingArea ;
+    rdfs:range          bot:Element ;
+    rdfs:label          "båret bygningsdel"@da , 
+                        "carried element"@en .
+
+ex:WallSurface
+    a                   owl:Class ;
+    rdfs:subClassOf     bot:Interface ;
+    rdfs:label          "Vægoverflade"@da , 
+                        "Wall surface"@en ;
+    rdfs:comment        "Grænsefladen mellem en væg og et rum."@da ,
+                        "The interface between a wall and a space."@en .
+ex:relatedWall
+    a                   owl:ObjectProperty ;
+    rdfs:subClassOf     bot:Interface ;
+    rdfs:domain         ex:WallSurface ;
+    rdfs:range          bot:Element ;
+    rdfs:label          "relateret væg"@da , 
+                        "related wall"@en .
+ex:relatedSpace
+    a                   owl:ObjectProperty ;
+    rdfs:subClassOf     bot:Interface ;
+    rdfs:domain         ex:WallSurface ;
+    rdfs:range          bot:Space ;
+    rdfs:label          "relateret rum"@da , 
+                        "related space"@en .
+ex:oppositeSurface
+    a                   owl:ObjectProperty , owl:SymmetricProperty ;
+    rdfs:subClassOf     bot:Interface ;
+    rdfs:domain         ex:WallSurface ;
+    rdfs:range          ex:WallSurface ;
+    rdfs:label          "modstående overflade"@da , 
+                        "opposite surface"@en ;
+    rdfs:comment        "Relation mellem to vægoverflader som er modstående til hinanden, hvilket vil sige at de er placeret på hver sin side af bygningsdelen og hvis den ene projeceres til modsatte overflade, vil geometrien af de to matche."@da ,
+                        "Relationship between two wall surfaces that are opposite to each other, meaning that they are placed at each side of the element and if one is projected to the opposite surface, the geometry of the two will match."@en .
+
+ex:WallIntersection
+    a                   owl:Class ;
+    rdfs:subClassOf     bot:Interface ;
+    rdfs:label          "Vægsamling"@da , 
+                        "Wall intersection"@en ;
+    rdfs:comment        "Grænsefladen mellem flere vægge som støder sammen."@da ,
+                        "The interface between more walls that intersect."@en .
+ex:intersectingWall
+    a                   owl:ObjectProperty ;
+    rdfs:subClassOf     bot:Interface ;
+    rdfs:domain         ex:WallIntersection ;
+    rdfs:range          bot:Element ;
+    rdfs:label          "skærende væg"@da , 
+                        "intersecting wall"@en .
+
+##########
+# EXTERNAL
+##########
+
+## NB! BEMÆRK AT PROPS:WALL_THICKNESS ER FRA ET KANAL-PSET OG DERFOR IKKE KAN BRUGES TIL ALMINDELIGE VÆGGE
+<http://lbd.arch.rwth-aachen.de/props#wallThickness_simple> a owl:ObjectProperty ;
+                                                            rdfs:domain <https://w3id.org/bot#Element> ;
+                                                            rdfs:comment """The thickness of the duct wall construction
+NOTE: It is assumed that chamber walls will be constructed at a single thickness."""@en ;
+                                                            rdfs:isDefinedBy <http://lbd.arch.rwth-aachen.de/ifcOWL/IFC4-PSD/Pset_DistributionChamberElementTypeFormedDuct#p7e97ae80d1d311e1800000215ad4efdf> .

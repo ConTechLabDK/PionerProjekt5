@@ -1,0 +1,115 @@
+@prefix sh:  <http://www.w3.org/ns/shacl#> .
+@prefix bot: <https://w3id.org/bot#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix nir: <https://www.bim.niras.com/ontology#> .
+@prefix ex:  <https://example.com/terms#> .
+@prefix ifc2x3: <https://standards.buildingsmart.org/IFC/DEV/IFC2x3/TC1/OWL#> .
+
+ex:BuildingCountShape
+    a sh:NodeShape ;
+    sh:targetNode bot:Building ;
+    sh:property [
+        sh:path [ sh:inversePath rdf:type ] ;
+        sh:minCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "Found no buildings!"@en ;
+    ] .
+
+ex:BuildingShape a sh:NodeShape;
+    sh:targetClass bot:Building ;
+    sh:property [
+        sh:path bot:hasStorey ;
+        sh:nodeKind sh:IRI ;
+        sh:class bot:Storey ;
+        sh:minCount 1 ;
+        sh:severity sh:Info ;
+        sh:message "A building should have at least one storey"@en
+    ] .
+
+ex:StoreyCountShape
+    a sh:NodeShape ;
+    sh:targetNode bot:Storey ;
+    sh:property [
+        sh:path [ sh:inversePath rdf:type ] ;
+        sh:minCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "Found no storeys in the building!"@en ;
+    ] .
+
+ex:StoreyShape a sh:NodeShape;
+    sh:targetClass bot:Storey ;
+    sh:property [
+        sh:path bot:hasSpace ;
+        sh:nodeKind sh:IRI ;
+        sh:class bot:Space ;
+        sh:minCount 1 ;
+        sh:severity sh:Info ;
+        sh:message "A storey should contain spaces."@en
+    ] , [
+        sh:path [ sh:inversePath bot:hasStorey ] ;
+        sh:nodeKind sh:IRI ;
+        sh:class bot:Building ;
+        sh:maxCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "A storey can only be assosiated with one building"@en
+    ] .
+
+ex:SpaceCountShape
+    a sh:NodeShape ;
+    sh:targetNode bot:Space ;
+    sh:property [
+        sh:path [ sh:inversePath rdf:type ] ;
+        sh:minCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "Found no spaces in the building!"@en ;
+    ] .
+
+ex:SpaceShape a sh:NodeShape;
+    sh:targetClass bot:Space ;
+    sh:property [
+        sh:path [ sh:inversePath bot:hasSpace ] ;
+        sh:nodeKind sh:IRI ;
+        sh:class bot:Storey ;
+        sh:maxCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "A space can only be assosiated with one storey"@en
+    ] .
+
+ex:WallSurfaceShape a sh:NodeShape ;
+    sh:targetClass ex:WallSurface ;
+    sh:property [
+        sh:path ex:relatedSpace ;
+        sh:nodeKind sh:IRI ;
+        sh:class bot:Space ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "A wall surface must be related to exactly one space."@en
+    ] , [
+        sh:path ex:relatedWall ;
+        sh:nodeKind sh:IRI ;
+        sh:class bot:Element ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "A wall surface must be related to exactly one element."@en
+    ] , [
+        sh:path ex:oppositeSurface ;
+        sh:nodeKind sh:IRI ;
+        sh:class ex:WallSurface ;
+        sh:maxCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "A wall surface cannot have more than one opposite surface."@en
+    ] .
+
+ex:WallShape a sh:NodeShape ;
+    sh:targetClass ifc2x3:IfcWall ;
+    sh:property [
+        sh:path [ sh:inversePath ex:relatedWall ] ;
+        sh:nodeKind sh:IRI ;
+        sh:class ex:WallSurface ;
+        sh:minCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "A wall must be assosiated with at least one wall surface."@en
+    ] .

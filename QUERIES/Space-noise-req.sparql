@@ -1,0 +1,6 @@
+SELECT ?sp ?expectedMaxNoiseLevel ?acceptedBackgroundNoiseLevel
+WHERE{
+    ?sp a bot:Space .
+    OPTIONAL{ ?sp ex:expectedMaxNoiseLevel ?expectedMaxNoiseLevel }
+    OPTIONAL{ ?sp ex:acceptedBackgroundNoiseLevel ?acceptedBackgroundNoiseLevel }
+}

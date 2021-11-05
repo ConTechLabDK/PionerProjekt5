@@ -1,0 +1,4 @@
+SELECT ?el ?nr
+WHERE{
+    ?el ex:requiredNoiseReduction ?nr
+}

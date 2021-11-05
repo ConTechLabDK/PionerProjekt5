@@ -1,0 +1,19 @@
+## prefixes ##
+@prefix bot: <https://w3id.org/bot#> .
+@prefix ex: <https://example.com/terms#> .
+
+###################################################################
+## If an element touches a space that is part of one fire section, 
+## the element touches that fire section
+###################################################################
+[?i1, ex:requiredNoiseReduction, ?nr],
+[?i2, ex:requiredNoiseReduction, ?nr]
+:-
+[?sp1, a, bot:Space],
+[?sp2, a, bot:Space],
+[?i1, ex:relatedSpace, ?sp1],
+[?i2, ex:relatedSpace, ?sp2],
+[?i1, ex:oppositeSurface, ?i2],
+[?sp1, ex:acceptedBackgroundNoiseLevel, ?max],
+[?sp2, ex:expectedMaxNoiseLevel, ?nl],
+BIND(?nl-?max AS ?nr).

@@ -1,0 +1,46 @@
+@prefix sh:  <http://www.w3.org/ns/shacl#> .
+@prefix bot: <https://w3id.org/bot#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix nir: <https://www.bim.niras.com/ontology#> .
+@prefix ex:  <https://example.com/terms#> .
+@prefix ifc2x3: <https://standards.buildingsmart.org/IFC/DEV/IFC2x3/TC1/OWL#> .
+
+# Possible to simply check that a property is defined at least once?
+
+ex:acceptedBackgroundNoiseLevelShape a sh:NodeShape ;
+    sh:targetSubjectsOf ex:acceptedBackgroundNoiseLevel ;
+    sh:property [
+        sh:class bot:Space ;
+        sh:severity sh:Warning ;
+        sh:message "Accepted background noise level can only be assigned to spaces!"@en
+    ] .
+
+ex:expectedMaxNoiseLevelShape a sh:NodeShape ;
+    sh:targetSubjectsOf ex:expectedMaxNoiseLevel ;
+    sh:property [
+        sh:class bot:Space ;
+        sh:severity sh:Warning ;
+        sh:message "Expected max noise level can only be assigned to spaces!"@en
+    ] .
+
+# ex:ENLShape a sh:PropertyShape ;
+#     sh:path ex:expectedMaxNoiseLevel ;
+#     sh:minCount 1 ;
+#     sh:severity sh:Warning ;
+#     sh:message "Found no spaces with expected max noise level assigned!"@en .
+
+
+ex:SpaceShape a sh:NodeShape ;
+    sh:targetClass bot:Space ;
+    sh:property [
+        sh:path ex:expectedMaxNoiseLevel ;
+        sh:minCount 1 ;
+        sh:severity sh:Info ;
+        sh:message "A space should have an expected max noise level."@en
+    ] , [
+        sh:path ex:acceptedBackgroundNoiseLevel ;
+        sh:minCount 1 ;
+        sh:severity sh:Info ;
+        sh:message "A space should have a specification of accepted background noise level."@en
+    ] .

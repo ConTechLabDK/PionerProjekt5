@@ -1,0 +1,17 @@
+@prefix sh:  <http://www.w3.org/ns/shacl#> .
+@prefix bot: <https://w3id.org/bot#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix nir: <https://www.bim.niras.com/ontology#> .
+@prefix ex:  <https://example.com/terms#> .
+@prefix ifc2x3: <https://standards.buildingsmart.org/IFC/DEV/IFC2x3/TC1/OWL#> .
+
+ex:WetRoomCountShape
+    a sh:NodeShape ;
+    sh:targetNode ex:WetRoom ;
+    sh:property [
+        sh:path [ sh:inversePath rdf:type ] ;
+        sh:minCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "Found no wet rooms!"@en ;
+    ] .

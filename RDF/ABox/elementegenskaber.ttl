@@ -1,0 +1,40 @@
+@prefix inst:  <https://niras.dk/projects/1234/> .
+@prefix rdfs:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix props: <http://lbd.arch.rwth-aachen.de/props#> .
+@prefix ex:    <https://example.com/terms#> .
+
+inst:IW1 
+    rdfs:label  "Indevæg 1"@da , 
+                "Interior wall 1"@en ;
+    ex:wallThickness 0.15 ;
+    ex:maxWallHeight 2.7 .
+
+inst:IW2 
+    rdfs:label  "Indevæg 2"@da , 
+                "Interior wall 2"@en ;
+    ex:wallThickness 0.15 ;
+    ex:maxWallHeight 2.7 .
+
+inst:IW3 
+    rdfs:label  "Indevæg 3"@da , 
+                "Interior wall 3"@en ;
+    ex:wallThickness 0.15 ;
+    ex:maxWallHeight 6.2 .
+
+inst:IW4 
+    rdfs:label  "Indevæg 4"@da , 
+                "Interior wall 4"@en ;
+    ex:wallThickness 0.15 ;
+    ex:maxWallHeight 2.7 .
+
+inst:DO1 
+    rdfs:label  "Dør 1"@da ,
+                "Door 1"@en .
+
+inst:KC1 
+    rdfs:label  "Væghængt køkkenskab 1"@da , 
+                "Wall-cabinet 1"@en ;
+    ex:weight   22 .
+
+# Interfaces
+inst:IW1KC2 ex:area 1.2 .

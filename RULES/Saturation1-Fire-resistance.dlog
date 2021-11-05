@@ -1,0 +1,31 @@
+## prefixes ##
+@prefix bot: <https://w3id.org/bot#> .
+@prefix ex: <https://example.com/terms#> .
+
+###################################################################
+## If an element touches a space that is part of one fire section, 
+## the element touches that fire section
+###################################################################
+[?i1, ex:fireClassification, ex:EI60],
+[?i2, ex:fireClassification, ex:EI60]
+:-
+[?sp1, a, bot:Space],
+[?sp2, a, bot:Space],
+[?fs1, a, ex:FireSection],
+[?fs2, a, ex:FireSection],
+[?fs1, bot:containsZone, ?sp1],
+[?fs2, bot:containsZone, ?sp2],
+[?i1, ex:relatedSpace, ?sp1],
+[?i2, ex:relatedSpace, ?sp2],
+[?i1, ex:oppositeSurface, ?i2],
+FILTER(?fs1 != ?fs2).
+
+###################################################################
+## If a fire section contains a space the space is contained in the 
+## fire section
+###################################################################
+[?sp, ex:containedInFireSection, ?fs]
+:-
+[?sp, a, bot:Space],
+[?fs, a, ex:FireSection],
+[?fs, bot:containsZone, ?sp].

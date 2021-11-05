@@ -1,0 +1,62 @@
+dstore create contech
+
+active contech
+
+# LOAD ABOX
+import "./RDF/ABox/brandsektioner.ttl"
+import "./RDF/ABox/bygningstopologi.ttl"
+import "./RDF/ABox/elementegenskaber.ttl"
+import "./RDF/ABox/produkter.ttl"
+import "./RDF/ABox/rumprogram.ttl"
+
+# LOAD TBOX
+import > <https://w3id.org/bot> "./RDF/TBox/bot.ttl"
+import > <https://w3id.org/own> "./RDF/TBox/own-terms.ttl"
+importaxioms <https://w3id.org/bot> > rdfox:DefaultTriples
+importaxioms <https://w3id.org/own> > rdfox:DefaultTriples
+
+# LOAD RULES FOR SATURATION
+import "./RULES/Saturation1-Fire-resistance.dlog"
+import "./RULES/Saturation2-Noise-reduction.dlog"
+
+# DEFINE PREFIXES
+PREFIX ex:   <https://example.com/terms#>
+PREFIX bot:  <https://w3id.org/bot#>
+PREFIX rdfs: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX inst: <https://niras.dk/projects/1234/>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX qudt: <http://qudt.org/schema/qudt/>
+
+set output out
+
+## IMPORT SHACL
+import > <https://ex/shacl/consistency> "./RULES/Precheck1-Consistency.ttl"
+import > <https://ex/shacl/geometry> "./RULES/Precheck2-Geometry.ttl"
+import > <https://ex/shacl/noise> "./RULES/Precheck3-Noise.ttl"
+import > <https://ex/shacl/fire> "./RULES/Precheck4-Fire.ttl"
+import > <https://ex/shacl/moisture> "./RULES/Precheck5-Moisture.ttl"
+
+echo \n\n### PRECHECK 1: CONSISTENCY ###\n
+SELECT ?s ?p ?o { \
+    TT rdfox:SHACL { rdfox:DefaultTriples <https://ex/shacl/consistency> ?s ?p ?o } \
+}
+
+echo \n\n### PRECHECK 2: GEOMETRY ###\n
+SELECT ?s ?p ?o { \
+    TT rdfox:SHACL { rdfox:DefaultTriples <https://ex/shacl/geometry> ?s ?p ?o } \
+}
+
+echo \n\n### PRECHECK 3: NOISE ###\n
+SELECT ?s ?p ?o { \
+    TT rdfox:SHACL { rdfox:DefaultTriples <https://ex/shacl/fire> ?s ?p ?o } \
+}
+
+echo \n\n### PRECHECK 5: MOISTURE ###\n
+SELECT ?s ?p ?o { \
+    TT rdfox:SHACL { rdfox:DefaultTriples <https://ex/shacl/moisture> ?s ?p ?o } \
+}
+
+# REMOVE STORE AND QUIT
+dstore delete contech force
+
+quit

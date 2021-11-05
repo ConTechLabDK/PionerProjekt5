@@ -1,0 +1,52 @@
+dstore create contech
+
+active contech
+
+# LOAD ABOX
+import "./RDF/ABox/brandsektioner.ttl"
+import "./RDF/ABox/bygningstopologi.ttl"
+import "./RDF/ABox/elementegenskaber.ttl"
+import "./RDF/ABox/produkter.ttl"
+import "./RDF/ABox/rumprogram.ttl"
+
+# LOAD TBOX
+import > <https://w3id.org/bot> "./RDF/TBox/bot.ttl"
+import > <https://w3id.org/own> "./RDF/TBox/own-terms.ttl"
+importaxioms <https://w3id.org/bot> > rdfox:DefaultTriples
+importaxioms <https://w3id.org/own> > rdfox:DefaultTriples
+
+# LOAD RULES FOR SATURATION
+import "./RULES/Saturation1-Fire-resistance.dlog"
+
+# DEFINE PREFIXES
+PREFIX ex:   <https://example.com/terms#>
+PREFIX bot:  <https://w3id.org/bot#>
+PREFIX rdfs: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX inst: <https://niras.dk/projects/1234/>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX qudt: <http://qudt.org/schema/qudt/>
+
+set output out
+
+echo \n\n### LIST SPACE + FIRE SECTION ###\n
+answer "./QUERIES/Space-fire-section.sparql"
+
+echo \n\n### GET FIRE CLASSIFICATIONS ###\n
+answer "./QUERIES/Surface-fire-classification.sparql"
+
+echo \n\n### MOVE SPACE 1 TO FIRE SECTION B ###\n
+# MOVE SPACE 1 TO FIRE SECTION B
+DELETE { inst:FS1 bot:containsZone ?s } \
+INSERT { inst:FS2 bot:containsZone ?s } \
+WHERE { BIND(inst:SP1 AS ?s) }
+
+echo \n\n### LIST SPACE + FIRE SECTION AGAIN ###\n
+answer "./QUERIES/Space-fire-section.sparql"
+
+echo \n\n### GET FIRE CLASSIFICATIONS AGAIN ###\n
+answer "./QUERIES/Surface-fire-classification.sparql"
+
+# REMOVE STORE AND QUIT
+dstore delete contech force
+
+quit

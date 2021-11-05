@@ -1,0 +1,11 @@
+@occ-api=http://0.0.0.0:3001
+
+### Mass top polygons
+POST {{occ-api}}/transform/massTopPolygons
+Content-Type: application/json
+
+{
+    "icdd_name": "ContechICDD",
+    "sas_url": "https://webbimstorage.blob.core.windows.net/results?sv=2020-08-04&ss=b&srt=sco&sp=rwdlacx&se=2022-08-05T04:35:13Z&st=2021-08-04T20:35:13Z&spr=https&sig=o8AaL6gHGkuEOiNp7pv8t0yL7V%2F5rQWRYpdtx9jb39w%3D",
+    "namespace": "https://web-bim/resources/1234/"
+}

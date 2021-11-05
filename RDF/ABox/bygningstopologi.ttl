@@ -1,0 +1,120 @@
+@prefix bot:  <https://w3id.org/bot#> .
+@prefix inst: <https://niras.dk/projects/1234/> .
+@prefix ex:   <https://example.com/terms#> .
+
+# CLASSES
+inst:BU1 a bot:Building .
+
+inst:ST1 a bot:Storey .
+
+inst:SP1 a bot:Space .
+inst:SP2 a bot:Space .
+inst:SP3 a bot:Space .
+inst:SP4 a bot:Space .
+inst:SP5 a bot:Space .
+
+inst:IW1 a bot:Element .
+inst:IW2 a bot:Element .
+inst:IW3 a bot:Element .
+inst:IW4 a bot:Element .
+
+inst:DO1 a bot:Element .
+
+# RELATIONSHIPS
+inst:BU1 bot:hasStorey inst:ST1 .
+
+inst:ST1 bot:hasSpace inst:SP1 , inst:SP2 , inst:SP3 , inst:SP4 , inst:SP5 .
+
+inst:SP1 bot:adjacentZone inst:SP2 , inst:SP4 .
+inst:SP2 bot:adjacentZone inst:SP1 , inst:SP3 , inst:SP4 , inst:SP5 .
+inst:SP3 bot:adjacentZone inst:SP2 , inst:SP5 .
+inst:SP4 bot:adjacentZone inst:SP1 , inst:SP2 , inst:SP5 .
+inst:SP5 bot:adjacentZone inst:SP2 , inst:SP3 , inst:SP4 .
+
+inst:SP1 bot:adjacentElement inst:IW1 , inst:IW3 .
+inst:SP2 bot:adjacentElement inst:IW1 , inst:IW2 , inst:IW3 .
+inst:SP3 bot:adjacentElement inst:IW2 , inst:IW3 , inst:DO1 .
+inst:SP4 bot:adjacentElement inst:IW3 , inst:IW4 .
+inst:SP5 bot:adjacentElement inst:IW3 , inst:IW4 , inst:DO1 .
+
+inst:SP1 bot:containsElement inst:KC1 .
+
+inst:IW3 bot:hasSubElement inst:DO1 .
+
+# INTERFACES
+
+# Wall surfaces
+inst:IW1SP1 a ex:WallSurface ;
+    ex:relatedWall inst:IW1 ;
+    ex:relatedSpace inst:SP1 ;
+    ex:oppositeSurface inst:IW1SP2 .
+inst:IW1SP2 a ex:WallSurface ;
+    ex:relatedWall inst:IW1 ;
+    ex:relatedSpace inst:SP2 ;
+    ex:oppositeSurface inst:IW1SP1 .
+inst:IW2SP2 a ex:WallSurface ;
+    ex:relatedWall inst:IW2 ;
+    ex:relatedSpace inst:SP2 ;
+    ex:oppositeSurface inst:IW2SP3 .
+inst:IW2SP3 a ex:WallSurface ;
+    ex:relatedWall inst:IW2 ;
+    ex:relatedSpace inst:SP3 ;
+    ex:oppositeSurface inst:IW2SP2 .
+inst:IW3SP1 a ex:WallSurface ;
+    ex:relatedWall inst:IW3 ;
+    ex:relatedSpace inst:SP1 ;
+    ex:oppositeSurface inst:IW3SP4a .
+inst:IW3SP2a a ex:WallSurface ;
+    ex:relatedWall inst:IW3 ;
+    ex:relatedSpace inst:SP2 ;
+    ex:oppositeSurface inst:IW3SP4b .
+inst:IW3SP2b a ex:WallSurface ;
+    ex:relatedWall inst:IW3 ;
+    ex:relatedSpace inst:SP2 ;
+    ex:oppositeSurface inst:IW3SP5b .
+inst:IW3SP3 a ex:WallSurface ;
+    ex:relatedWall inst:IW3 ;
+    ex:relatedSpace inst:SP3 ;
+    ex:oppositeSurface inst:IW3SP5a .
+inst:IW3SP4a a ex:WallSurface ;
+    ex:relatedWall inst:IW3 ;
+    ex:relatedSpace inst:SP4 ;
+    ex:oppositeSurface inst:IW3SP1 .
+inst:IW3SP4b a ex:WallSurface ;
+    ex:relatedWall inst:IW3 ;
+    ex:relatedSpace inst:SP4 ;
+    ex:oppositeSurface inst:IW3SP2a .
+inst:IW3SP5a a ex:WallSurface ;
+    ex:relatedWall inst:IW3 ;
+    ex:relatedSpace inst:SP5 ;
+    ex:oppositeSurface inst:IW3SP3 .
+inst:IW3SP5b a ex:WallSurface ;
+    ex:relatedWall inst:IW3 ;
+    ex:relatedSpace inst:SP5 ;
+    ex:oppositeSurface inst:IW3SP2b .
+inst:IW3SP5c a ex:WallSurface ;
+    ex:relatedWall inst:IW3 ;
+    ex:relatedSpace inst:SP5 .
+inst:IW4SP4 a ex:WallSurface ;
+    ex:relatedWall inst:IW4 ;
+    ex:relatedSpace inst:SP4 ;
+    ex:oppositeSurface inst:IW4SP5 .
+inst:IW4SP5 a ex:WallSurface ;
+    ex:relatedWall inst:IW4 ;
+    ex:relatedSpace inst:SP5 ;
+    ex:oppositeSurface inst:IW4SP4 .
+
+# Wall intersections
+inst:IW1IW3 a ex:WallIntersection ;
+    ex:intersectingWall inst:IW1 , inst:IW3 .
+inst:IW2IW3 a ex:WallIntersection ;
+    ex:intersectingWall inst:IW2 , inst:IW3 .
+inst:IW3IW4 a ex:WallIntersection ;
+    ex:intersectingWall inst:IW3 , inst:IW4 .
+
+# Wall-mounted elements
+inst:IW1 ex:hasMountedElement inst:KC1 .
+
+inst:IW1KC2 a ex:MountingArea ;
+    ex:carriedElement inst:KC1 ;
+    ex:carryingElement inst:IW1 .
